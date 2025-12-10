@@ -202,7 +202,7 @@ router.post("/admission", async (req, res) => {
 });
 
 router.get("/user/signup", (req, res) => {
-  res.status(200).json("hello");
+  res.status(200).json("hello world");
 });
 
 export default router;
