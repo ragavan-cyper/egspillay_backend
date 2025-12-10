@@ -18,15 +18,16 @@ app.use(
     credentials: true,
   })
 );
-mongoose.connect(
-  "mongodb+srv://ragavanragavan906_db_user:LCw1MRV6p5ARksXp@egspillaydatabase.wyxsl5u.mongodb.net/egsDB",
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  }
-)
-.then(() => console.log("MongoDB connected successfully"))
-.catch((err) => console.error("DB connection failed: ", err));
+mongoose
+  .connect(
+   process.env.MONGO_DB,
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }
+  )
+  .then(() => console.log("MongoDB connected successfully"))
+  .catch((err) => console.error("DB connection failed: ", err));
 // ROUTES
 app.use("/api", router);
 
