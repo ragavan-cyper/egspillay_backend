@@ -1,0 +1,6 @@
+{
+  "exec": "node server.mjs",
+  "watch": ["server.mjs"],
+  "ext": "js,mjs,json"
+}
+
