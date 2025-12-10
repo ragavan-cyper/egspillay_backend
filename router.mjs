@@ -5,8 +5,7 @@ import generate from "./generateotp.mjs";
 import { sendMail } from "./sendmail.mjs";
 import bcrypt, { compare } from "bcrypt";
 import Cart from "./cardschema/cartschema.mjs";
-import Application from "./application/aplicationschema.mjs"
-
+import Application from "./application/aplicationschema.mjs";
 
 const router = Router();
 
@@ -202,9 +201,8 @@ router.post("/admission", async (req, res) => {
   }
 });
 
-
-router.get("/user/signup",(req,res)=>{
-  json("hello")
-})
+router.get("/user/signup", (req, res) => {
+  res.status(200).json("hello");
+});
 
 export default router;
