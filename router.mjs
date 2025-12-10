@@ -5,7 +5,7 @@ import generate from "./generateotp.mjs";
 import { sendMail } from "./sendmail.mjs";
 import bcrypt, { compare } from "bcrypt";
 import Cart from "./cardschema/cartschema.mjs";
-import Application from "../emailverfication/application/apllicationschema.mjs";
+import Application from "../emailverfication/application/aplicationschema.mjs";
 
 const router = Router();
 
