@@ -19,13 +19,10 @@ app.use(
   })
 );
 mongoose
-  .connect(
-   process.env.MONGO_DB,
-    {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    }
-  )
+  .connect(process.env.MONGO_DB, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => console.log("MongoDB connected successfully"))
   .catch((err) => console.error("DB connection failed: ", err));
 // ROUTES
