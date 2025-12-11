@@ -8,7 +8,6 @@ import Cart from "./cardschema/cartschema.mjs";
 import Application from "./application/aplicationschema.mjs";
 
 const router = Router();
-
 router.post("/user/signup", async (req, res) => {
   let { name, email } = req.body;
   email = email.toLowerCase();
@@ -20,7 +19,6 @@ router.post("/user/signup", async (req, res) => {
     }
 
     const otp = generate();
-
     const hashedotp = await bcrypt.hash(otp.toString(), 10);
 
     await Otp.create({
@@ -28,11 +26,12 @@ router.post("/user/signup", async (req, res) => {
       otp: hashedotp,
       expiresAt: Date.now() + 5 * 60 * 1000,
     });
-    await sendMail(process.env.MY_USER, email, `your otp ${otp}`);
-    console.log(Otp);
 
-    res.status(200).json("Otp successfuly send");
+    await sendMail(email, `Your OTP is: ${otp}`);
+
+    res.status(200).json("Otp successfully sent");
   } catch (error) {
+    console.error("Signup error:", error);
     res.status(400).json("server error");
   }
 });

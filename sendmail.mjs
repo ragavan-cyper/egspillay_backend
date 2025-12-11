@@ -16,22 +16,15 @@ const transport=nodemailer.createTransport({
 })
 
 
-export async function sendMail(from,to,text) {
-    try {
-        await transport.sendMail({
-            
-          from,
-    to,
-    text,
-
-        })
-
-
-        
-    } catch (error) {
-         console.error("❌ Mail send failed:", error.message);
-        
-    }
-  
-    
+export async function sendMail(to, text) {
+  try {
+    await transport.sendMail({
+      from: process.env.MY_USER,   // FIXED
+      to: to,                      // User email
+      subject: "Your OTP Code",
+      text: text,
+    });
+  } catch (error) {
+    console.error("❌ Mail send failed:", error);
+  }
 }
