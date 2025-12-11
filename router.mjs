@@ -37,18 +37,25 @@ router.post("/user/signup", async (req, res) => {
 });
 
 router.post("/user/verify", async (req, res) => {
-  const { otp, name, password } = req.body;
-  let email = req.body.email.toLowerCase();
+  const { otp, name, password, email } = req.body;
+
+  if (!otp || !email || !name || !password) {
+    return res.status(400).json({ success: false, message: "All fields required" });
+  }
+
   try {
-    const validuser = await Otp.findOne({ email });
+    const validuser = await Otp.findOne({ email: email.toLowerCase() });
 
     if (!validuser) {
-      return res.status(404).json("email not found");
+      return res.status(404).json({ success: false, message: "OTP not found or expired" });
     }
-    const ismatch = await compare(otp.toString(), validuser.otp);
+
+    const ismatch = await bcrypt.compare(otp.toString(), validuser.otp);
+
     if (!ismatch) {
-      return res.status(404).json("wrong otp");
+      return res.status(400).json({ success: false, message: "Invalid OTP" });
     }
+
     const hashedpassword = await bcrypt.hash(password, 10);
 
     await User.create({
@@ -59,10 +66,12 @@ router.post("/user/verify", async (req, res) => {
     });
 
     await Otp.deleteOne({ email });
-    res.status(200).json("user created welcome");
+
+    return res.status(200).json({ success: true, message: "User verified successfully" });
+
   } catch (error) {
-    console.error("Error in verify:", error);
-    res.status(500).json("server crash");
+    console.error("Verify error:", error);
+    return res.status(500).json({ success: false, message: "Server error" });
   }
 });
 
