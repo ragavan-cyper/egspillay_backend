@@ -1,3 +1,12 @@
+import express from "express";
+import User from "./mongooseModel.mjs";
+import Otp from "./otp.mjs";
+import generate from "./generateotp.mjs";
+import { sendMail } from "./sendmail.mjs";
+import bcrypt from "bcrypt";
+
+const router = express.Router(); // 🔥 இதுதான் missing
+
 router.post("/user/signup", async (req, res) => {
   let { name, email } = req.body;
   email = email.toLowerCase();
@@ -8,7 +17,7 @@ router.post("/user/signup", async (req, res) => {
       return res.status(409).json("Account already created");
     }
 
-    // 🔥 IMPORTANT FIX
+    // old OTP delete
     await Otp.deleteOne({ email });
 
     const otp = generate();
@@ -28,4 +37,5 @@ router.post("/user/signup", async (req, res) => {
     return res.status(500).json("Server error");
   }
 });
- export default router
+
+export default router;
