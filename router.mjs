@@ -28,3 +28,4 @@ router.post("/user/signup", async (req, res) => {
     return res.status(500).json("Server error");
   }
 });
+ export default router
