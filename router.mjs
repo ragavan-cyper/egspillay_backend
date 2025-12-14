@@ -6,8 +6,8 @@ import { sendMail } from "./sendmail.mjs";
 import bcrypt, { compare } from "bcrypt";
 import Cart from "./cardschema/cartschema.mjs";
 import Application from "./application/aplicationschema.mjs";
-
 const router = Router();
+
 router.post("/user/signup", async (req, res) => {
   let { name, email } = req.body;
   email = email.toLowerCase();
@@ -27,12 +27,18 @@ router.post("/user/signup", async (req, res) => {
       expiresAt: Date.now() + 5 * 60 * 1000,
     });
 
-    await sendMail(email, `Your OTP is: ${otp}`);
+  
+    try {
+      await sendMail(email, `Your OTP is: ${otp}`);
+      return res.status(200).json("Otp successfully sent");
+    } catch (mailError) {
+      console.error("❌ OTP mail failed:", mailError.message);
+      return res.status(500).json("Mail service failed");
+    }
 
-    res.status(200).json("Otp successfully sent");
   } catch (error) {
     console.error("Signup error:", error);
-    res.status(400).json("server error");
+    return res.status(500).json("Server error");
   }
 });
 
