@@ -1,30 +1,32 @@
-import nodemailer from "nodemailer";
-
-const transport = nodemailer.createTransport({
-  host: "smtp-relay.brevo.com",
-  port: 587,
-  secure: false,
-  auth: {
-    user: process.env.SMTP_USER, // apikey
-    pass: process.env.SMTP_PASS, // Brevo SMTP key
-  },
-});
-
-transport.verify((err) => {
-  if (err) {
-    console.error("❌ SMTP error:", err);
-  } else {
-    console.log("✅ SMTP READY (Brevo)");
-  }
-});
+import axios from "axios";
 
 export async function sendMail(to, text) {
-  const info = await transport.sendMail({
-    from: "no-reply@egspillay.com",
-    to,
-    subject: "Your OTP Code",
-    text,
-  });
+  try {
+    const res = await axios.post(
+      "https://api.brevo.com/v3/smtp/email",
+      {
+        sender: {
+          name: "EGS Pillay",
+          email: "no-reply@egspillay.com",
+        },
+        to: [{ email: to }],
+        subject: "Your OTP Code",
+        textContent: text,
+      },
+      {
+        headers: {
+          "api-key": process.env.BREVO_API_KEY,
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
-  console.log("📧 Mail sent:", info.response);
+    console.log("📧 Mail sent via Brevo API:", res.data);
+  } catch (error) {
+    console.error(
+      "❌ Brevo API mail failed:",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
 }
