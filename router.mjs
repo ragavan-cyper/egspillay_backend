@@ -5,7 +5,7 @@ import generate from "./generateotp.mjs";
 import { sendMail } from "./sendmail.mjs";
 import bcrypt from "bcrypt";
 
-const router = express.Router(); // 🔥 இதுதான் missing
+const router = express.Router();
 
 router.post("/user/signup", async (req, res) => {
   let { name, email } = req.body;
