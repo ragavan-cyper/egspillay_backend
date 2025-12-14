@@ -1,32 +1,26 @@
 import nodemailer from "nodemailer";
 
 const transport = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 587,         
-  secure: false,      
+  host: "smtp-relay.brevo.com",
+  port: 587,
+  secure: false,
   auth: {
-    user: process.env.MY_USER,
-    pass: process.env.MY_PASS,
-  },
-  tls: {
-    rejectUnauthorized: false,
+    user: process.env.SMTP_USER, // apikey
+    pass: process.env.SMTP_PASS, // Brevo SMTP key
   },
 });
 
-
-transport.verify((error) => {
-  if (error) {
-    console.error("❌ SMTP VERIFY FAILED:", error);
+transport.verify((err) => {
+  if (err) {
+    console.error("❌ SMTP error:", err);
   } else {
-    console.log("✅ SMTP SERVER READY");
+    console.log("✅ SMTP READY (Brevo)");
   }
 });
 
 export async function sendMail(to, text) {
-  console.log("📨 Sending mail to:", to);
-
   const info = await transport.sendMail({
-    from: process.env.MY_USER,
+    from: "no-reply@egspillay.com",
     to,
     subject: "Your OTP Code",
     text,
