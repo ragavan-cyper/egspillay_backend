@@ -219,4 +219,12 @@ router.get("/user/signup", (req, res) => {
   res.status(200).json("hello world");
 });
 
+
+
+router.get("/test-mail", async (req, res) => {
+  await sendMail("yourgmail@gmail.com", "Test mail from Render");
+  res.send("Mail test triggered");
+});
+
+
 export default router;
