@@ -7,7 +7,7 @@ export async function sendMail(to, text) {
       {
         sender: {
           name: "EGS Pillay",
-          email: "no-reply@egspillay.com",
+          email: "ragavanragavan906@gmail.com", 
         },
         to: [{ email: to }],
         subject: "Your OTP Code",
